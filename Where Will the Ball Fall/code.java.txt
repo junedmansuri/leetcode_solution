@@ -1,0 +1,48 @@
+class Solution {
+    public int[] findBall(int[][] grid) {
+        // calculating for each column whether it gets stuck or comes out
+        int[] res = new int[grid[0].length];
+        for(int j=0;j<grid[0].length;j++)
+        {
+            res[j] = solve(grid, 0, j);
+        }
+        return res;
+    }
+    
+    
+    public int solve(int[][] grid, int i, int j)
+    {
+        int m = grid[0].length; 
+        int n = grid.length;
+        
+        if(i==n) // when the ball comes out of grid
+        {
+            return j;
+        }
+		// Stuck Condition 1
+        if(i<n && j+1<m && ( grid[i][j] == 1 && grid[i][j+1] == -1))
+        {
+            return -1;
+        }
+        // Stuck Condition 2 
+        if(i<n && j-1>=0 && ( grid[i][j] == -1 && grid[i][j-1] == 1))
+        {
+            return -1;
+        }
+        
+        int val = -1;
+        // upon checking the boundries make the next call in the desired direction
+		// if 1 go to right
+        if(grid[i][j] == 1  && j+1<m)
+        {
+           val =  solve(grid, i+1, j+1);
+        }
+        // if -1 go to left
+        if(grid[i][j] == -1 && j-1>=0)
+        {
+           val =  solve(grid, i+1, j-1);
+        }
+        
+        return val;
+    }
+}
